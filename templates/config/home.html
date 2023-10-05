@@ -1,0 +1,25 @@
+{% extends 'config/base.html' %}
+
+{% block title %}
+    <title>Home Page</title>
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <p>Welcome, {{user}}!</p>
+        <a href="{% url 'logout'%}">LogOut</a>
+        <ol>
+        {% for goal in goals|slice:"0:3" %}
+            {% if goal.author.username == user.username %}
+                <li>
+                    <a href="{% url 'goaldelete' goal.id %}">{{goal.plan}}</a>
+                        <br>{{goal.description}}<br>{{goal.deadline}}<br>{{goal.created}}</li>
+            {% endif %}
+        {% endfor %}
+        </ol>
+    {% else %}
+        <p>Guest, please register or login!</p>
+        <a href="{% url 'login'%}">SignIn</a>
+        <a href="{% url 'signup'%}">SignUp</a>
+    {% endif %}
+{% endblock %}
